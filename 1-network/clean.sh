@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker network rm netnightclazz
+docker network rm mongonet

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker network create netnightclazz
+docker network create mongonet

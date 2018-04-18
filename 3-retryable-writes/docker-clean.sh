@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-docker stop mongodb-nightclazz-app
-docker rm -v mongodb-nightclazz-app
+docker stop mongodb-python
+docker rm -v mongodb-python
 exit 0

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-docker stop mongodb-nightclazz1 mongodb-nightclazz2 mongodb-nightclazz3
-docker rm -v mongodb-nightclazz1 mongodb-nightclazz2 mongodb-nightclazz3
+docker stop mongo1 mongo2 mongo3
+docker rm -v mongo1 mongo2 mongo3
 rm -rf data 

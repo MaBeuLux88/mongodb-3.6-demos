@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build -t ptijohn/mongodb-nightclazz-app:1.0 .
+docker build -t mabeulux88/mongodb-python:1.0 .

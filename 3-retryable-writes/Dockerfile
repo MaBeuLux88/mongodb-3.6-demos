@@ -8,4 +8,4 @@ ADD requirements.txt /
 RUN pip install --trusted-host pypi.python.org -r ./requirements.txt
 
 # Here we insert some data
-CMD ["python", "./hereWeCode.py"]
+CMD ["python", "-u", "./hereWeCode.py"]
