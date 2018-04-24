@@ -10,7 +10,7 @@ docker run -d -p 27018:27017 -h mongo2 --network mongonet --network-alias mongo2
 docker run -d -p 27019:27017 -h mongo3 --network mongonet --network-alias mongo3 --name mongo3 \
 	mongo:3.6.3 --replSet replicaTest --bind_ip_all
 
-sleep 1
+sleep 3
 
 # Here we initialize the replica
 echo 'rs.initiate({
