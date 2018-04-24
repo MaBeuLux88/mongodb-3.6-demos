@@ -36,18 +36,20 @@ This repository consists in a bunch of scripts to execute to test new MongoDB 3.
  * If you have activated the retryable writes, then the `./findMissing.sh` will return an empty list.
  * If you did not activate the retryable writes, then the `./findMissing.sh` will return the list of missing numbers. 
 
-## [WIP] Testing causal consistency
+## Testing causal consistency
 
- * Go to 4-causal-consistency and look at the script `hereWeCode.py`, it reads from MongoDB, without option, to get the actual state of data
- * It then opens a session, updates the document that we just read (or inserts if the document didn't exist)
- * It then reads the document we just upserted (with readPreference to 'secondary').
- * Put causalConsistency to False to test things out.
- * Build the image with `docker-build.sh`
- * Run the script with `docker-run.sh` (Don't hesitate to run it multiple times). You'll see that there's no difference between the first and the second print, despite the update
- * Put causalConsistency to True.
- * Build the image with `docker-build.sh`
- * Run the script with `docker-run.sh` (Don't hesitate to run it multiple times). Now the two prints will be different, as the session is waiting for replication. 
- * NOTE : In this case, putting the write concern to 2 would have also worked.
+ * Go to 4-causal-consistency
+ * Run `./docker-build.sh` once to create the docker image.
+ * This image runs the `causalConsistency.py` python script.
+ * Run this container with `./docker-run.sh [true|false]` and choose the boolean to activate or not the causal consistency.
+ * This script does the following actions:
+   * Open a session,
+   * Read the current document on the primary (=real value stored),
+   * Increment x by 10 on primary node (of course)
+   * Read the current document on the secondary (=eventually consistent value - depends if the replication is done already or not),
+   * Close session.
+ * If the causal consistency is not activated, the read on the secondary returns the old value of X. The do NOT read our own write.
+ * If the causal consistency is activated, the read on the secondary returns the new value of X. We are reading our own write.
 
 ## Trying aggregation stages
 

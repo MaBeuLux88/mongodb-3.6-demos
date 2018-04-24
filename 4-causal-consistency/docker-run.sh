@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-
-docker run -h mongodb-nightclazz --rm --name mongodb-nightclazz-causal --network netnightclazz --network-alias nightclazz-mongo ptijohn/mongodb-nightclazz-causal:1.0
+docker run --rm --network mongonet mabeulux88/mongodb-causal:1.0 $1
 

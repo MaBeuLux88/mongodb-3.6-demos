@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build -t ptijohn/mongodb-nightclazz-causal:1.0 .
+docker build -t mabeulux88/mongodb-causal:1.0 .
