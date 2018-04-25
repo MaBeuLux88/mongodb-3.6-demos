@@ -21,9 +21,11 @@ with client.start_session(causal_consistency=causalConsistency) as session:
     print(coll.find_one({'_id': 1}))
 
     print("\n==> 'x' increment +10 with upsert\n")
+    # todo : missing try catch
     coll.update_one({'_id': 1}, {'$inc': {'x': 10}}, upsert=True, session=session)
 
     # A secondary read waits for replication of the write.
     print("End session document")
     secondary_coll = coll.with_options(read_preference=ReadPreference.SECONDARY)
+    # todo missing try catch
     print(secondary_coll.find_one({'_id': 1}, session=session))
