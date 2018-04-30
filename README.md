@@ -16,7 +16,7 @@ This repository consists in a bunch of scripts to execute to test new MongoDB 3.
 # How to Use
 
 ## Creating the network
-
+ * Go to 0-docker-image to build the python base docker image we need with `./docker-build.sh`
  * Go to 1-network and execute `create.sh`
  * If need be, you can remove the network by using `clean.sh`
 
@@ -37,49 +37,33 @@ This repository consists in a bunch of scripts to execute to test new MongoDB 3.
  * If you did not activate the retryable writes, then the `./findMissing.sh` will return the list of missing numbers. 
 
 ## Testing causal consistency
-
+ 
+ * This test expect the mongo1 to be primary and mongo2 to be the secondary. If it's not the case, make it so!
  * Go to 4-causal-consistency
  * Run `./docker-build.sh` once to create the docker image.
  * This image runs the `causalConsistency.py` python script.
- * Run this container with `./docker-run.sh [true|false]` and choose the boolean to activate or not the causal consistency.
+ * Run this container with `./docker-run-true.sh` to see the run **with** the causal consistency. 
+ * Run this container with `./docker-run-false.sh` to see the run **without** the causal consistency.
  * This script does the following actions:
    * Open a session,
    * Read the current document on the primary (=real value stored),
    * Increment x by 10 on primary node (of course)
    * Read the current document on the secondary (=eventually consistent value - depends if the replication is done already or not),
    * Close session.
- * If the causal consistency is not activated, the read on the secondary returns the old value of X. The do NOT read our own write.
+ * The python script without the causal consistency simulates a lag on the secondary node (mongo2:27017).
+ * If the causal consistency is not activated, the read on the secondary returns the old value of X. We do NOT read our own write.
  * If the causal consistency is activated, the read on the secondary returns the new value of X. We are reading our own write.
 
-## Trying aggregation stages
+## Testing  aggregation stages
 
-### Array to Object
- * Use the `docker-run.sh` to load some data in MongoDB
- * Use `connect_to_mongodb.sh` to launch the shell
- * Launch this command to test `$arrayToObject`:
-```javascript
-db.arrayToObject.aggregate(
-   [
-      {
-         $project: {
-            item: 1,
-            dimensions: { $arrayToObject: "$dimensions" }
-         }
-      }
-   ]
-)
-```
- * Launch this command to test `$objectToArray`:
-```javascript
-db.objectToArray.aggregate(
-   [
-      {
-         $project: {
-            item: 1,
-            dimensions: { $objectToArray: "$dimensions" }
-         }
-      }
-   ]
-)
-```
+ * Go to 5-aggregation and insert the sample data with `insertSamples.sh`.
+ * Try the 2 aggregations with `arrayToObject.sh` and `objectToArray.sh`
+ 
+## Testing the Change Streams
 
+ * Go to 6-change-streams
+ * Run `./docker-build.sh` once to create the docker image. 
+ * Open a bunch of shells and start one of the change stream scripts in each of them.
+ * Run this container with `/docker-run.sh` to generate some random CRUD activity on the ReplicaSet.
+ * Note : You can't see read operations with a change streams and you can filter inserts, updates and deletes the way you want. 
+ 
