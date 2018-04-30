@@ -1,9 +1,5 @@
-FROM python:alpine3.6
+FROM mabeulux88/mongodb-python:1.0
 
 ADD retryableWrites.py /
-ADD requirements.txt /
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r ./requirements.txt
 
 ENTRYPOINT ["python", "-u", "retryableWrites.py"]
