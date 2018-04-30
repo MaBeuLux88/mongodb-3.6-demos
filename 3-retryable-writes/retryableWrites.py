@@ -13,7 +13,7 @@ retryWrites = sys.argv[1].lower() == 'true'
 print("Retryable Writes activated: " + (u'\U0001f604' if retryWrites else u'\U0001f622') + "\n")
 
 # Database connection
-client = MongoClient(host=['mongo1:27017', 'mongo2:27018'], replicaset='replicaTest', retryWrites=retryWrites, w=2)
+client = MongoClient(host=['mongo1:27017', 'mongo2:27017'], replicaset='replicaTest', retryWrites=retryWrites, w=2)
 db = client.test
 collection = db.coll
 

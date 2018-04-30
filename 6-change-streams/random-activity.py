@@ -38,7 +38,7 @@ class RandomActivity:
 
     @staticmethod
     def get_collection():
-        client = MongoClient(host=['mongo1:27017', 'mongo2:27018'], replicaset='replicaTest')
+        client = MongoClient(host=['mongo1:27017', 'mongo2:27017'], replicaset='replicaTest')
         # client = MongoClient(host=['localhost:27017', 'localhost:27018'], replicaset='replicaTest')
         users = client.test.users
         return users
