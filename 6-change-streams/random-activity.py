@@ -9,13 +9,11 @@ from pymongo.errors import PyMongoError
 
 # This class generate some random activities on a MongoDB node for test and demo purposes.
 # In this example, I am inserting, reading, updating and deleting "user" documents randomly.
-# I
 class RandomActivity:
+    users = None
 
     def __init__(self):
         self.docs = self.get_documents_from_file("users.json")
-        self.users = self.get_collection()
-
         self.ids = self.collect_all_ids()
         self.deleted = list(self.ids)
         self.inserted = []
@@ -28,20 +26,20 @@ class RandomActivity:
 
     @staticmethod
     def get_argument():
-        if len(sys.argv) != 2:
-            print("You forgot the argument!\nSleep time between 2 operations: <float>")
+        if len(sys.argv) != 3:
+            print("You forgot the arguments!")
+            print(" - MongoDB URI")
+            print(" - Sleep time between 2 operations: <float>")
             exit(1)
-
-        sleep = float(sys.argv[1])
+        uri = str(sys.argv[1])
+        sleep = float(sys.argv[2])
         print("Sleep time : " + str(sleep))
-        return sleep
+        return uri, sleep
 
     @staticmethod
-    def get_collection():
-        client = MongoClient(host=['mongo1:27017', 'mongo2:27017'], replicaset='replicaTest')
-        # client = MongoClient(host=['localhost:27017', 'localhost:27018'], replicaset='replicaTest')
-        users = client.test.users
-        return users
+    def get_collection(uri):
+        client = MongoClient(uri)
+        RandomActivity.users = client.test.users
 
     @staticmethod
     def get_documents_from_file(users_json):
@@ -53,7 +51,8 @@ class RandomActivity:
         return docs
 
     def main(self):
-        sleep = self.get_argument()
+        uri, sleep = self.get_argument()
+        self.get_collection(uri)
         self.remove_all_documents()
         for i in range(100000):
             action = self.determine_random_action()
